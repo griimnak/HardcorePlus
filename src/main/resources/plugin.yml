@@ -1,0 +1,10 @@
+name: HardPlus
+version: 0.9.9
+main: me.griimnak.hardplus.HardPlus
+api-version: 1.13
+authors: [griimnak]
+description: Enhances the vanilla Hard difficulty by gradually decreasing players's max health on death.
+website: https://griimnak.me
+commands:
+  hardplus:
+    description: Plugin info.
