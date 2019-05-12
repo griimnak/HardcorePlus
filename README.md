@@ -1,4 +1,4 @@
-# Minecraft-HardPlus
+# HardPlus
 
 No configs or permissions necessary.
 
