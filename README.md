@@ -1,6 +1,6 @@
 # HardPlus
 
-No configs or permissions necessary.
+<b>No configs or permissions necessary.</b>
 
 This is a simple lightweight plugin that gradually decreases players's max health every time they die.
 
