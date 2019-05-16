@@ -10,3 +10,6 @@ commands:
     description: Plugin info.
     usage: /<command>
     alias: hcp
+permissions:
+  hardcoreplus.admin:
+    description: Admin commands like setting max hp for players, etc.
