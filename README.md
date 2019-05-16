@@ -31,11 +31,13 @@ Once a user has ran out of hearts, they are perma dead.
 <details>
   <summary>View old media</summary>
 
+##### 2nd Youtube Demonstration:
+[![Alt text](https://img.youtube.com/vi/z5rxjSrnwJY/0.jpg)](https://www.youtube.com/watch?v=z5rxjSrnwJY)
   
 ##### [OLD] Youtube Demonstration:
 [![Alt text](https://img.youtube.com/vi/C36bSUXwPZw/0.jpg)](https://www.youtube.com/watch?v=C36bSUXwPZw)
 </details>
 
 ##### Youtube Demonstration:
-[![Alt text](https://img.youtube.com/vi/z5rxjSrnwJY/0.jpg)](https://www.youtube.com/watch?v=z5rxjSrnwJY)
+[![Alt text](https://img.youtube.com/vi/DiMFgSwdqvc/0.jpg)](https://www.youtube.com/watch?v=DiMFgSwdqvc)
 
