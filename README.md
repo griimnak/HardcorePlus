@@ -19,6 +19,7 @@ Once a user has ran out of hearts, they are perma dead.
   - Corrected creeper instakill bug
   - Added sound effect to death
   - Added admin permission
+  - Enderdragon kill event
   - Started admin commands
   
   [May 13 2019]
