@@ -11,23 +11,33 @@ Enhances the vanilla Minecraft hardcore experience by degrading players' max hea
 
 Once a user has ran out of hearts, they are perma dead.
 
-###### Users can now restore their max hp by killing the ender dragon.
+[May 1 2019]
 
-  [May 15 2019]
+- increased weakness after death to 3 minutes 30 sec
+- hardcoreplus commands are accessible from server console now
+- if hardcore is not set in server.properties console will be notified
+
+- fixed bug with setmax command always settings to 10 hearts
+- fixed bug with fire and potion effects persisting after death
+- fixed bug with setmax command allowing use of negative numbers
+- fixed bug with setmax command allowing use of invalid numbers
+
+[May 15 2019]
+
+- Users can now restore their max hp by killing the ender dragon.
+- Added blood effect on hit
+- Corrected creeper instakill bug
+- Added sound effect to death
+- Added admin permission
+- Enderdragon kill event
+- Started admin commands
   
-  - Added blood effect on hit
-  - Corrected creeper instakill bug
-  - Added sound effect to death
-  - Added admin permission
-  - Enderdragon kill event
-  - Started admin commands
-  
-  [May 13 2019]
-  
-  - Changed health lost from 1 to 2 hearts.
-  - Changed DeathEvent to EntityDamagedEvent
-  - Death is no longer announced.
-  - "Dream" effect created.
+[May 13 2019]
+ 
+- Changed health lost from 1 to 2 hearts.
+- Changed DeathEvent to EntityDamagedEvent
+- Death is no longer announced.
+- "Dream" effect created.
 
 <details>
   <summary>View old media</summary>
