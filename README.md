@@ -11,7 +11,7 @@ Enhances the vanilla Minecraft hardcore experience by degrading players' max hea
 
 Once a user has ran out of hearts, they are perma dead.
 
-[May 1 2019]
+[May 18 2019]
 
 - increased weakness after death to 3 minutes 30 sec
 - hardcoreplus commands are accessible from server console now
