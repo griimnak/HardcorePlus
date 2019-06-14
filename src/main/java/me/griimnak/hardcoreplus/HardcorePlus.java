@@ -59,51 +59,53 @@ public final class HardcorePlus extends JavaPlugin implements Listener {
         if(e.getEntity() instanceof Player) {
             Player damaged = (Player) e.getEntity();
             // shields
-            if(damaged.isBlocking()) { return; }
-
-            // blood effect
-            if(config.getBoolean("bloodEffectEnabled")) {
-                damaged.getWorld().playEffect(damaged.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
-            }
-
-            double max_hp = damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
-            if((damaged.getHealth()-e.getDamage()) <= 0.0D) {
-                if(max_hp - 4.0D > 0.0D) {
-                    e.setCancelled(true);
-                    damaged.setHealth(max_hp);
-                    damaged.setSaturation(5);
-                    damaged.setFoodLevel(20);
-                    damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(max_hp - 4.0D);
-                    damaged.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + config.getString("healthLossText"));
-                    // clear effects
-                    damaged.getActivePotionEffects().clear();
-                    damaged.setFireTicks(0);
-                    // respawn
-                    if(damaged.getBedSpawnLocation() != null) {
-                        damaged.teleport(damaged.getBedSpawnLocation());
-                        damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + config.getString("bedRespawnText"));
-                    } else {
-                        damaged.teleport(damaged.getWorld().getSpawnLocation());
-                        damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + config.getString("noBedRespawnText"));
-                    }
-                    System.out.println(damaged.getDisplayName() + " has lost permanent health.");
-
-                    // trippy effect
-                    if(config.getBoolean("trippySoundEnabled")) {
-                        damaged.getWorld().playEffect(damaged.getLocation(), Effect.ZOMBIE_CONVERTED_VILLAGER, 0);
-                    }
-
-                    if(config.getBoolean("trippyEffectEnabled")) {
-                        damaged.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 220,1));
-                        damaged.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100,0));
-                    }
-
-                    if(config.getBoolean("weaknessOnRespawn")) {
-                        damaged.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 3500,1));
-                    }
-
+            if(!damaged.isBlocking()) {
+                // blood effect
+                if(config.getBoolean("bloodEffectEnabled")) {
+                    damaged.getWorld().playEffect(damaged.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
                 }
+
+                double max_hp = damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
+                if((damaged.getHealth()-e.getDamage()) <= 0.0D) {
+                    if(max_hp - 4.0D > 0.0D) {
+                        e.setCancelled(true);
+                        damaged.setHealth(max_hp);
+                        damaged.setSaturation(5);
+                        damaged.setFoodLevel(20);
+                        damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(max_hp - 4.0D);
+                        damaged.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + config.getString("healthLossText"));
+                        // clear effects
+                        damaged.getActivePotionEffects().clear();
+                        damaged.setFireTicks(0);
+                        // respawn
+                        if(damaged.getBedSpawnLocation() != null) {
+                            damaged.teleport(damaged.getBedSpawnLocation());
+                            damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + config.getString("bedRespawnText"));
+                        } else {
+                            damaged.teleport(damaged.getWorld().getSpawnLocation());
+                            damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + config.getString("noBedRespawnText"));
+                        }
+                        System.out.println(damaged.getDisplayName() + " has lost permanent health.");
+
+                        // trippy effect
+                        if(config.getBoolean("trippySoundEnabled")) {
+                            damaged.getWorld().playEffect(damaged.getLocation(), Effect.ZOMBIE_CONVERTED_VILLAGER, 0);
+                        }
+
+                        if(config.getBoolean("trippyEffectEnabled")) {
+                            damaged.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 220,1));
+                            damaged.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100,0));
+                        }
+
+                        if(config.getBoolean("weaknessOnRespawn")) {
+                            damaged.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 3500,1));
+                        }
+
+                    }
+                }
+
             }
+
         }
     }
 
