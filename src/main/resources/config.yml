@@ -1,0 +1,15 @@
+healthLossText: You have permanently lost health.
+bedRespawnText: You awake from your dream in confusion
+noBedRespawnText: With no place of rest set, you awake from your dream, in familiar land.
+permaDeathServerText: is permanently dead!
+permaDeathPlayerText: You are permanently dead.
+dragonKillText: The dream is over. Your mind clears, the portal opens.
+maxHpRestoreText: Your max health has been restored.
+
+bloodEffectEnabled: true
+trippyEffectEnabled: true
+trippySoundEnabled: true
+weaknessOnRespawn: true
+
+restoreHpOnDragonKill: true
+enforceHardcoreMode: true

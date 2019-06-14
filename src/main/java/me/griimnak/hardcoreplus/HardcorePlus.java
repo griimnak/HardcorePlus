@@ -5,6 +5,8 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,13 +16,39 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.File;
+
 public final class HardcorePlus extends JavaPlugin implements Listener {
+    private FileConfiguration config;
+    private File cfile;
+    
     @Override
     public void onEnable() {
-        if(!getServer().isHardcore()) {
-            ConsoleCommandSender console = getServer().getConsoleSender();
-            console.sendMessage(ChatColor.RED + "[HardcorePlus] >> Hardcore mode is not enabled in server.properties!");
-            console.sendMessage(ChatColor.RED + "[HardcorePlus] >> It is recommended you set hardcore-mode to true and restart.");
+        // config defaults
+        config = getConfig();
+        config.options().copyDefaults(true);
+        saveConfig();
+
+        cfile = new File(getDataFolder(), "config.yml");
+
+        // detect hardcore mode enabled in server.properties
+        if(config.getBoolean("enforceHardcoreMode")) {
+            if(!getServer().isHardcore()) {
+                ConsoleCommandSender console = getServer().getConsoleSender();
+                getServer().shutdown();
+                console.sendMessage(ChatColor.RED + "[HardcorePlus] >> ---------------------------------------------------------------------------------");
+                console.sendMessage(ChatColor.RED + "[HardcorePlus] >> Hardcore mode not enabled in server.properties! ");
+                console.sendMessage(ChatColor.RED + "[HardcorePlus] >> Please set hardcore to true and generate a new world. ");
+                console.sendMessage(ChatColor.RED + "[HardcorePlus] >> ---------------------------------------------------------------------------------");
+                console.sendMessage(ChatColor.RED + "[HardcorePlus] >> ");
+                console.sendMessage(ChatColor.RED + "[HardcorePlus] >> ");
+                console.sendMessage(ChatColor.RED + "[HardcorePlus] >> ");
+                console.sendMessage(ChatColor.RED + "[HardcorePlus] >> ");
+                console.sendMessage(ChatColor.RED + "[HardcorePlus] >> ---------------------------------------------------------------------------------");
+                console.sendMessage(ChatColor.RED + "[HardcorePlus] >> Hardcore mode not enabled in server.properties! ");
+                console.sendMessage(ChatColor.RED + "[HardcorePlus] >> Please set hardcore to true and generate a new world. ");
+                console.sendMessage(ChatColor.RED + "[HardcorePlus] >> ---------------------------------------------------------------------------------");
+            }
         }
         System.out.println("[HardcorePlus] Welcome to griimnak's HardcorePlus plugin.");
         getServer().getPluginManager().registerEvents(this, this);
@@ -30,7 +58,14 @@ public final class HardcorePlus extends JavaPlugin implements Listener {
     public void playerDamageReceive(EntityDamageEvent e) {
         if(e.getEntity() instanceof Player) {
             Player damaged = (Player) e.getEntity();
-            damaged.getWorld().playEffect(damaged.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
+            // shields
+            if(damaged.isBlocking()) { return; }
+
+            // blood effect
+            if(config.getBoolean("bloodEffectEnabled")) {
+                damaged.getWorld().playEffect(damaged.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
+            }
+
             double max_hp = damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
             if((damaged.getHealth()-e.getDamage()) <= 0.0D) {
                 if(max_hp - 4.0D > 0.0D) {
@@ -39,24 +74,33 @@ public final class HardcorePlus extends JavaPlugin implements Listener {
                     damaged.setSaturation(5);
                     damaged.setFoodLevel(20);
                     damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(max_hp - 4.0D);
-                    damaged.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You have permanently lost health.");
+                    damaged.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + config.getString("healthLossText"));
                     // clear effects
                     damaged.getActivePotionEffects().clear();
                     damaged.setFireTicks(0);
                     // respawn
                     if(damaged.getBedSpawnLocation() != null) {
                         damaged.teleport(damaged.getBedSpawnLocation());
-                        damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "You awake from your dream in confusion.");
+                        damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + config.getString("bedRespawnText"));
                     } else {
                         damaged.teleport(damaged.getWorld().getSpawnLocation());
-                        damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "With no place of rest set, you awake from your dream, in familiar land.");
+                        damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + config.getString("noBedRespawnText"));
                     }
                     System.out.println(damaged.getDisplayName() + " has lost permanent health.");
+
                     // trippy effect
-                    damaged.getWorld().playEffect(damaged.getLocation(), Effect.ZOMBIE_CONVERTED_VILLAGER, 0);
-                    damaged.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 220,1));
-                    damaged.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 3500,1));
-                    damaged.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100,0));
+                    if(config.getBoolean("trippySoundEnabled")) {
+                        damaged.getWorld().playEffect(damaged.getLocation(), Effect.ZOMBIE_CONVERTED_VILLAGER, 0);
+                    }
+
+                    if(config.getBoolean("trippyEffectEnabled")) {
+                        damaged.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 220,1));
+                        damaged.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100,0));
+                    }
+
+                    if(config.getBoolean("weaknessOnRespawn")) {
+                        damaged.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 3500,1));
+                    }
 
                 }
             }
@@ -66,23 +110,25 @@ public final class HardcorePlus extends JavaPlugin implements Listener {
     @EventHandler
     public void Death(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        event.setDeathMessage(ChatColor.RED + "" +ChatColor.BOLD + player.getDisplayName() + " is permanently dead!");
-        player.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "You are dead forever.");
+        event.setDeathMessage(ChatColor.RED + "" +ChatColor.BOLD + player.getDisplayName() + config.getString("permaDeathServerText"));
+        player.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + config.getString("permaDeathPlayerText"));
         player.setGameMode(GameMode.SPECTATOR);
     }
 
     @EventHandler
     public void onEnderDragonKill(EntityDeathEvent event) {
-        // If Entity is Dragon
-        if(event.getEntity() instanceof EnderDragon) {
-            // For each player in the server
-            for(Player player: getServer().getOnlinePlayers()) {
-                // If player is in the end, reward full HP
-                if(player.getWorld().getEnvironment().equals(World.Environment.THE_END)) {
-                    player.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "The dream is over. Your mind clears, the portal opens.");
-                    // restore max health
-                    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0D);
-                    player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Your max health has been restored!");
+        if(config.getBoolean("restoreHpOnDragonKill")) {
+            // If Entity is Dragon
+            if(event.getEntity() instanceof EnderDragon) {
+                // For each player in the server
+                for(Player player: getServer().getOnlinePlayers()) {
+                    // If player is in the end, reward full HP
+                    if(player.getWorld().getEnvironment().equals(World.Environment.THE_END)) {
+                        player.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + config.getString("dragonKillText"));
+                        // restore max health
+                        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0D);
+                        player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + config.getString("maxHpRestoreText"));
+                    }
                 }
             }
         }
@@ -100,6 +146,10 @@ public final class HardcorePlus extends JavaPlugin implements Listener {
                 if(!sender.hasPermission("hardcoreplus.admin")){
                     sender.sendMessage(""+ ChatColor.RED+"You don't have the permission to do this!!!");
                     return true;
+                }
+                if(args[0].equalsIgnoreCase("reload")) {
+                    config = YamlConfiguration.loadConfiguration(cfile);
+                    sender.sendMessage(ChatColor.GREEN + "Configuration reloaded.");
                 }
                 if(args[0].equalsIgnoreCase("setmax")) {
                     if(args.length < 3) {
