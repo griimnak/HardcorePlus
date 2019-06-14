@@ -11,6 +11,23 @@ Enhances the vanilla Minecraft hardcore experience by degrading players' max hea
 
 Once a user has ran out of hearts, they are perma dead.
 
+[June 14 2019]
+
+HardcorePlus 0.1.8 corrects some minor annoyances and finally introduces the configuration system.
+
+Thank you to @LucasLogical for finding the following bugs.
+
+- Fixed bug with shields not working properly
+- Fixed bug with blood effect showing through shields
+
+- New command: /hardcoreplus reload - reloads the config.yml
+
+- Config system complete
+- Config options for toggling: bloodEffect, respawnSound, respawnEffect, respawnWeakness
+- Config option for toggling max hp restore by ender dragon kill
+- Config options for all ingame texts
+- Config option for enforcing hardcore mode upon server.
+
 [May 18 2019]
 
 - increased weakness after death to 3 minutes 30 sec
