@@ -1,15 +1,36 @@
-healthLossText: You have permanently lost health.
-bedRespawnText: You awake from your dream in confusion
-noBedRespawnText: With no place of rest set, you awake from your dream, in familiar land.
-permaDeathServerText: is permanently dead!
-permaDeathPlayerText: You are permanently dead.
-dragonKillText: The dream is over. Your mind clears, the portal opens.
-maxHpRestoreText: Your max health has been restored.
+BloodEffectEnabled: true # create blood when a player is hit
+RespawnSoundEnabled: true # make eerie sound when player respawns/dies
+RespawnEffectEnabled: true # give nausea to player on respawn/death
 
-bloodEffectEnabled: true
-trippyEffectEnabled: true
-trippySoundEnabled: true
-weaknessOnRespawn: true
+KeepInventoryEnabled: false # keep inventory?
+KeepExperienceEnabled: false # keep experience?
 
-restoreHpOnDragonKill: true
-enforceHardcoreMode: true
+LoseMaxHealthOnRespawnEnabled: true
+LoseMaxHealthOnRespawnAmmount: 4.0 # 2.0 = 1 heart, 1.0 = half a heart
+HealthLossText: "You have permanently lost health."
+
+BanOnDeathEnabled: true # ban on respawn/death?
+BanOnDeathHoursAmmount: 12 # hours
+BanOnDeathText: "You Died!"
+
+PermaBanOnFinalDeathEnabled: true # perma ban a player when they run out of max health?
+PermaBanText: "Game over."
+
+AnnounceDeathEnabled: true # announce when someone respawn/dies?
+AnnounceDeathText: " died." # <player> died.
+
+PermaDeathServerText: " is permanently dead"
+PermaDeathPlayerText: "You are permanently dead."
+
+DragonKillRestoresMaxHealthEnabled: true # restore max health to all players in The End when dragon dies
+DragonKillText: "The dream is over. Your mind clears, the portal opens.."
+MaxHealthRestoreText: "Your max health has been restored."
+
+# If BanOnDeath is enabled there's no reason to config below
+# Without BanOnDeath, these give the immersion that the player woke from a bad dream instead of dying
+RespawnBedText: "You awake from your dream in confusion."
+RespawnWildText: "With no place of rest set, you awake from your dream in familiar land."
+
+
+
+

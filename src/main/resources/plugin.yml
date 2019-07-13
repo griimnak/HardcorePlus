@@ -1,9 +1,9 @@
 name: HardcorePlus
-version: 0.1.8
+version: 1.0.0
 main: me.griimnak.hardcoreplus.HardcorePlus
 api-version: 1.13
 authors: [griimnak]
-description: Enhances the vanilla Minecraft hardcore experience by degrading players' max health on death.
+description: Enhances the vanilla Minecraft hardcore experience.
 website: https://griimnak.me
 commands:
   hardcoreplus:
@@ -13,3 +13,5 @@ commands:
 permissions:
   hardcoreplus.admin:
     description: Admin commands like setting max hp for players, etc.
+  hardcoreplus.ban_exempt:
+    description: Grants a player ban exemption when death on ban is enabled.

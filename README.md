@@ -1,15 +1,39 @@
 <p align="center">
-  <img src="https://i.imgur.com/ak1ZAlR.png" alt="Hradcore+"/>
+  <img src="https://i.imgur.com/ak1ZAlR.png" alt="Hardcore+"/>
 </p>
 
 [![stability-experimental](https://img.shields.io/badge/stability-stable-green.svg)](https://github.com/emersion/stability-badges#stable)
 <b>Latest release build:</b> <a href="https://github.com/griimnak/Minecraft-HardPlus/releases">here</a>
 
-<b>A Minecraft 1.14.1+ Bukkit/Spigot Plugin</b>
+<b>A Minecraft 1.14.1+ Bukkit/Spigot/Paper Plugin</b>
 
-Enhances the vanilla Minecraft hardcore experience by degrading players' max health on death.
+Enhances the vanilla Minecraft hardcore experience.
 
 Once a user has ran out of hearts, they are perma dead.
+
+[July 13 2019]
+HardcorePlus 1.0.0 - Major release
+
+Thank you to OnyxianSoul for suggesting the rework of hardcoreCheck() method.
+
+- Plugin completely re written
+- Servers must now have hardcore enabled in server.properties.
+- Fixed bug with extra "invisible" health after max health is updated.
+- Source cleaned and using more oop, compartmentalized
+- Spigot api updated to spigot-api:1.14.1
+
+- Added option to temp ban on respawn/fake death.
+- Added option to permaban on real death/perma death.
+- Added option to announce respawn/fake death to server.
+- Added option to keep inventory respawn/fake death. 
+- Added option to keep experience on respawn/fake death.
+
+- Added hardcoreplus.ban_exempt permission to allow players to ignore banondeath
+- Added /hardcoreplus disable command to disable plugin ingame.
+- Added stat tracking, so far only "total-perm-dead-players" is avaiable.
+
+- Removed weakness on respawn/fake death.
+
 
 [June 14 2019]
 
