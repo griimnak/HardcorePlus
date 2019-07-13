@@ -12,6 +12,7 @@ Enhances the vanilla Minecraft hardcore experience.
 Once a user has ran out of hearts, they are perma dead.
 
 [July 13 2019]
+
 HardcorePlus 1.0.0 - Major release
 
 Thank you to OnyxianSoul for suggesting the rework of hardcoreCheck() method.
