@@ -9,7 +9,7 @@ LoseMaxHealthOnRespawnEnabled: true
 LoseMaxHealthOnRespawnAmmount: 4.0 # 2.0 = 1 heart, 1.0 = half a heart
 HealthLossText: "You have permanently lost health."
 
-BanOnDeathEnabled: true # ban on respawn/death?
+BanOnDeathEnabled: false # ban on respawn/death?
 BanOnDeathHoursAmmount: 12 # hours
 BanOnDeathText: "You Died!"
 

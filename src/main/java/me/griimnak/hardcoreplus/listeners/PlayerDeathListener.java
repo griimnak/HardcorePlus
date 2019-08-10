@@ -3,6 +3,7 @@ package me.griimnak.hardcoreplus.listeners;
 import me.griimnak.hardcoreplus.HardcorePlus;
 import me.griimnak.hardcoreplus.config.ConfigManager;
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,6 +27,7 @@ public class PlayerDeathListener implements Listener {
         event.setDeathMessage(ChatColor.RED + "" + ChatColor.BOLD + player.getName() + ConfigManager.config.getString("PermaDeathServerText"));
         player.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + ConfigManager.config.getString("PermaDeathPlayerText"));
 
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0D);
         updateStatsFile();
 
         // if perma ban enabled

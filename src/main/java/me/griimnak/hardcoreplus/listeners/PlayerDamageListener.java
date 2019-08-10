@@ -126,7 +126,7 @@ public class PlayerDamageListener implements Listener {
                     damaged.teleport(damaged.getBedSpawnLocation());
                     damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + ConfigManager.config.getString("RespawnBedText"));
                 } else {
-                    damaged.teleport(damaged.getWorld().getSpawnLocation());
+                    damaged.teleport(damaged.getServer().getWorlds().get(0).getSpawnLocation());
                     damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + ConfigManager.config.getString("RespawnWildText"));
                 }
 
@@ -151,7 +151,7 @@ public class PlayerDamageListener implements Listener {
                             public void run() {
                                 plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "tempban " + damaged.getName() + " " + ConfigManager.config.getString("BanOnDeathHoursAmmount") + "h1s " + ConfigManager.config.getString("BanOnDeathText"));
                             }
-                        }, 10);
+                        }, 50);
                     }
                 }
 

@@ -19,6 +19,11 @@ public class Commands implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(command.getName().equalsIgnoreCase("hardcoreplus")) {
+            if(!plugin.state.get()) {
+                sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Hardcore mode is not enabled on this server. Plugin is disabled.");
+                return true;
+            }
+
             if(args.length < 1) {
                 sender.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "HardcorePlus " + plugin.getDescription().getVersion() + " by griimnak");
                 sender.sendMessage(ChatColor.GRAY + "Enhances the vanilla Minecraft hardcore experience.");
@@ -53,8 +58,8 @@ public class Commands implements CommandExecutor {
                             sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Max hp value should be 0.0 and above");
                         } else {
                             Player player = getServer().getPlayer(args[1]);
-                            player.setHealth(max_hp);
                             player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(max_hp);
+                            player.setHealth(max_hp);
                             player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Your max hp has been updated.");
                             sender.sendMessage(""+args[1]+"'s max hp updated successfully.");
                         }

@@ -4,11 +4,13 @@ import me.griimnak.hardcoreplus.config.ConfigManager;
 import me.griimnak.hardcoreplus.listeners.DragonDeathListener;
 import me.griimnak.hardcoreplus.listeners.PlayerDamageListener;
 import me.griimnak.hardcoreplus.listeners.PlayerDeathListener;
-import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class HardcorePlus extends JavaPlugin {
+    // since disabling the plugin is buggy, i made my own state handler.
+    State state = new State();
+
     @Override
     public void onEnable() {
         init();
@@ -16,27 +18,36 @@ public final class HardcorePlus extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.getLogger().info(ChatColor.YELLOW + "Goodbye");
+        this.getLogger().info("Goodbye");
     }
 
     private void init() {
-        this.getLogger().info(ChatColor.GREEN + "Hello Minecraft!");
+        this.getLogger().info("Hello Minecraft!");
         new ConfigManager(this).createConfig(); // load conf
-        checkHardcore(); // enforce hardcore mode
-        regEvents(); // register event listeners
+
+        // enforce hardcore
+        if (checkHardcore()) {
+            regEvents();
+        } else {
+            getLogger().warning("Hardcore mode not set, not registering event listeners.");
+        }
 
         // listen for commands
         this.getCommand("hardcoreplus").setExecutor(new Commands(this));
     }
 
-    private void checkHardcore() {
+    private boolean checkHardcore() {
         // if server is not hardcore
         if(!getServer().isHardcore()) {
             // warn
-            getLogger().warning(ChatColor.YELLOW + "Please set hardcore to true in server.properties!");
+            getLogger().warning("Please set hardcore to true in server.properties!");
             // disable plugin
-            getServer().getPluginManager().disablePlugin(this);
+            state.set(false);
+            // getServer().getPluginManager().disablePlugin(this);
+
+            return false;
         }
+        return true;
     }
 
     private void regEvents() {
