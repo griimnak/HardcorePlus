@@ -11,6 +11,18 @@ Enhances the vanilla Minecraft hardcore experience.
 
 Once a user has ran out of hearts, they are perma dead.
 
+[Aug 10 2019]
+
+Thanks NotToBlame for helping find the following bugs.
+
+NOTE: Delete your old config before using the new version.
+
+- Fixed a suffucation bug when dying in a dimension other than the overworld.
+- Fixed an issue with /hardcoreplus command crashing when plugin is disabled.
+- Fixed a bug with /hardcoreplus setmax command.
+- Custom state management, since disabling the plugin was buggy.
+- Maxhealth is reset on final death, incase an admin wishes to unban the player.
+
 [July 13 2019]
 
 HardcorePlus 1.0.0 - Major release
