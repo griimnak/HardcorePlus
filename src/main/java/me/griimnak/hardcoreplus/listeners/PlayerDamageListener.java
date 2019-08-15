@@ -122,13 +122,17 @@ public class PlayerDamageListener implements Listener {
                 damaged.setFoodLevel(20);
 
                 // respawn
-                if(damaged.getBedSpawnLocation() != null) {
-                    damaged.teleport(damaged.getBedSpawnLocation());
-                    damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + ConfigManager.config.getString("RespawnBedText"));
-                } else {
-                    damaged.teleport(damaged.getServer().getWorlds().get(0).getSpawnLocation());
-                    damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + ConfigManager.config.getString("RespawnWildText"));
-                }
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                    public void run() {
+                        if(damaged.getBedSpawnLocation() != null) {
+                            damaged.teleport(damaged.getBedSpawnLocation());
+                            damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + ConfigManager.config.getString("RespawnBedText"));
+                        } else {
+                            damaged.teleport(damaged.getServer().getWorlds().get(0).getSpawnLocation());
+                            damaged.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + ConfigManager.config.getString("RespawnWildText"));
+                        }
+                    }
+                }, 5);
 
                 // trippy effects if enabled
                 if(ConfigManager.config.getBoolean("RespawnSoundEnabled")) {
@@ -151,7 +155,7 @@ public class PlayerDamageListener implements Listener {
                             public void run() {
                                 plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "tempban " + damaged.getName() + " " + ConfigManager.config.getString("BanOnDeathHoursAmmount") + "h1s " + ConfigManager.config.getString("BanOnDeathText"));
                             }
-                        }, 50);
+                        }, 20);
                     }
                 }
 
