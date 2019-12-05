@@ -5,6 +5,7 @@ import me.griimnak.hardcoreplus.config.ConfigManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
@@ -36,7 +37,28 @@ public class PlayerDamageListener implements Listener {
         }
 
         // if hp - dmg less or equal 0.0
-        if((damaged.getHealth() - event.getFinalDamage()) <= 0.0D) {
+        if((damaged.getHealth() - event.getFinalDamage()) <= 0.0D) {            
+
+            /*
+                ==========
+                Totem fix
+                ==========
+            */
+            // Check if totems are enabled in the config
+            if(ConfigManager.config.getBoolean("TotemOfUndyingWorks")){
+                // Check if player is holding a Totem of Undying in Main- or Offhand
+                if(damaged.getInventory().getItemInMainHand().getType().equals(Material.TOTEM_OF_UNDYING) ||
+                        damaged.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING)){
+
+                    // Play the totem effect.
+                    // Removing the totem from the players hand is unnecessary because the spawnParticle will handle it.
+                    damaged.spawnParticle(Particle.TOTEM, damaged.getLocation(), 1);
+                    damaged.sendMessage(ChatColor.GREEN + "" + ChatColor.ITALIC + ConfigManager.config.getString("TotemDeathPlayerText"));
+                    // return so the player won't be teleported to their bed or loose the amount of hearts specified.
+                    return;
+                }
+            }
+
             // max hp of damaged player
             double max_hp = damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
             if(max_hp - ConfigManager.config.getDouble("LoseMaxHealthOnRespawnAmmount") > 0.0D) {
