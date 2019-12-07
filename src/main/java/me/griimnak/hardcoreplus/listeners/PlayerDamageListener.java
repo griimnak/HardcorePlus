@@ -2,10 +2,15 @@ package me.griimnak.hardcoreplus.listeners;
 
 import me.griimnak.hardcoreplus.HardcorePlus;
 import me.griimnak.hardcoreplus.config.ConfigManager;
+
+import java.util.Calendar;
+import java.util.Date;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.BanList.Type;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
@@ -175,7 +180,11 @@ public class PlayerDamageListener implements Listener {
                         // if this isn't delayed it gives a weird "user took too long to log in" bug.
                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                             public void run() {
-                                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "tempban " + damaged.getName() + " " + ConfigManager.config.getString("BanOnDeathHoursAmmount") + "h1s " + ConfigManager.config.getString("BanOnDeathText"));
+                                if(damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()  > 0)
+                                {
+                                    plugin.getServer().getBanList(Type.NAME).addBan(damaged.getName(), ChatColor.RED + ConfigManager.config.getString("BanOnDeathText") + ChatColor.RESET, getBanDate(ConfigManager.config.getInt("BanOnDeathHoursAmmount")), "HardcorePlus");    
+                                    damaged.kickPlayer(ChatColor.RED + ConfigManager.config.getString("BanOnDeathText") + ChatColor.RESET);
+                                }
                             }
                         }, 20);
                     }
@@ -184,5 +193,12 @@ public class PlayerDamageListener implements Listener {
             }
         }
 
+    }
+    private Date getBanDate(int h)
+    {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.HOUR_OF_DAY, h);
+        return c.getTime();
     }
 }
