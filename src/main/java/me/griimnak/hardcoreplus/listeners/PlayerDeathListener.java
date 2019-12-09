@@ -3,6 +3,7 @@ package me.griimnak.hardcoreplus.listeners;
 import me.griimnak.hardcoreplus.HardcorePlus;
 import me.griimnak.hardcoreplus.config.ConfigManager;
 import org.bukkit.ChatColor;
+import org.bukkit.BanList.Type;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,7 +37,8 @@ public class PlayerDeathListener implements Listener {
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 public void run() {
                     // ban
-                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "ban " + player.getName() + " " + ConfigManager.config.getString("PermaBanText"));
+                    plugin.getServer().getBanList(Type.NAME).addBan(player.getName(), ChatColor.RED + ConfigManager.config.getString("PermaBanText") + ChatColor.RESET, null, "HardcorePlus");    
+                    player.kickPlayer(ChatColor.RED + ConfigManager.config.getString("PermaBanText") + ChatColor.RESET);
                 }
             }, 10);
         }
