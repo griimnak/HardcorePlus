@@ -76,8 +76,6 @@ public class PlayerDamageListener implements Listener {
                 if(ConfigManager.config.getBoolean("AnnounceDeathEnabled")) {
 
                     EntityDamageEvent.DamageCause cause = event.getCause();
-                    EntityType entityType = (event.getEntityType() != null) ? event.getEntityType() : null;
-
 
                     if(cause == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION){
                         broadcast(GetConfigString("dmsg_BlockExplosion").replaceAll("%PLAYER%",damaged.getDisplayName()));
@@ -89,8 +87,6 @@ public class PlayerDamageListener implements Listener {
                         broadcast(GetConfigString("dmsg_DragonBreath").replaceAll("%PLAYER%", damaged.getDisplayName()));
                     } else if(cause == EntityDamageEvent.DamageCause.DROWNING){
                         broadcast(GetConfigString("dmsg_Drowning").replaceAll("%PLAYER%", damaged.getDisplayName()));
-                    } else if(cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK){
-                        broadcast(GetConfigString("dmsg_EntityAttack").replaceAll("%PLAYER%", damaged.getDisplayName()).replaceAll("%ENTITY%", entityType.name()));
                     } else if(cause == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION){
                         broadcast(GetConfigString("dmsg_EntityExplosion").replaceAll("%PLAYER%", damaged.getDisplayName()));
                     } else if(cause == EntityDamageEvent.DamageCause.FALL){
@@ -127,6 +123,8 @@ public class PlayerDamageListener implements Listener {
                         broadcast(GetConfigString("dmsg_Void").replaceAll("%PLAYER%", damaged.getDisplayName()));
                     } else if(cause == EntityDamageEvent.DamageCause.WITHER){
                         broadcast(GetConfigString("dmsg_Wither").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK){
+                        broadcast(GetConfigString("dmsg_EntityAttack").replaceAll("%PLAYER%", damaged.getDisplayName()));
                     } else {
                         broadcast(GetConfigString("AnnounceDeathText").replaceAll("%PLAYER%", damaged.getDisplayName()));
                     }

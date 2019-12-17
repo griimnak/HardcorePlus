@@ -44,13 +44,13 @@ CustomDeathMessagesEnabled: true # Enable or disable custom death messages
 
 # < dmsg > stands for Death Message
 
-dmsg_BlockExplosion: "%PLAYER% blew his head off." # TNT explosion or other block explosions
+dmsg_BlockExplosion: "%PLAYER% blew his head off." # block explosions not tnt
 dmsg_Contact: "%PLAYER% touched a sharp edge." # When player is touching a block like cactus
 dmsg_Cramming: "%PLAYER% was ran over by a unknown horde of mobs." # When a player is colliding with too many entities
-dmsg_DragonBreath: "A horde of unknown mobs ran over %PLAYER%." # Dragon Breathing fire
+dmsg_DragonBreath: "%PLAYER was roasted by the dragon." # Dragon Breathing fire
 dmsg_Drowning: "%PLAYER% didn't reach the surface in time." # When player doesn't have enough oxygen
-dmsg_EntityAttack: "%PLAYER% was killed by a random %ENTITY%" # When player is killed by a melee attacked from another mob
-dmsg_EntityExplosion: "A creeper snuck up behind %PLAYER%." # Creepers...... Aw maaaan
+dmsg_EntityAttack: "%PLAYER% was killed by another player or mob" # When player is killed by a melee attacked from another mob
+dmsg_EntityExplosion: "%PLAYER% blew his head off." # TNT explosion
 dmsg_Fall: "%PLAYER% experienced gravity." # Fall damage
 dmsg_FallingBlock: "%PLAYER% was hit in the head to hard." # When something like anvils falls on a player
 dmsg_Fire: "%PLAYER% played with fire." # Damage caused by direct exposure to fire
