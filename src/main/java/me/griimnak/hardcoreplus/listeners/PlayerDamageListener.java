@@ -75,7 +75,7 @@ public class PlayerDamageListener implements Listener {
                 // announce death if enabled
                 if(ConfigManager.config.getBoolean("AnnounceDeathEnabled")) {
 
-                    EntityDamageEvent.DamageCause cause = event.getCause();
+                    EntityDamageEvent.DamageCause cause = (ConfigManager.config.getBoolean("CustomDeathMessagesEnabled")) ? event.getCause() : null;
 
                     if(cause == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION){
                         broadcast(GetConfigString("dmsg_BlockExplosion").replaceAll("%PLAYER%",damaged.getDisplayName()));
