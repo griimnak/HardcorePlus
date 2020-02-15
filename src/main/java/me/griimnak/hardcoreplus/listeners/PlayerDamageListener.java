@@ -2,11 +2,18 @@ package me.griimnak.hardcoreplus.listeners;
 
 import me.griimnak.hardcoreplus.HardcorePlus;
 import me.griimnak.hardcoreplus.config.ConfigManager;
+
+import java.util.Calendar;
+import java.util.Date;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.BanList.Type;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -68,48 +75,130 @@ public class PlayerDamageListener implements Listener {
 
                 // announce death if enabled
                 if(ConfigManager.config.getBoolean("AnnounceDeathEnabled")) {
-                    plugin.getServer().broadcastMessage(damaged.getName() + ConfigManager.config.getString("AnnounceDeathText"));
+
+                    EntityDamageEvent.DamageCause cause = (ConfigManager.config.getBoolean("CustomDeathMessagesEnabled")) ? event.getCause() : null;
+
+                    if(cause == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION){
+                        broadcast(GetConfigString("dmsg_BlockExplosion").replaceAll("%PLAYER%",damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.CONTACT){
+                        broadcast(GetConfigString("dmsg_Contact").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.CRAMMING){
+                        broadcast(GetConfigString("dmsg_Cramming").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.DRAGON_BREATH){
+                        broadcast(GetConfigString("dmsg_DragonBreath").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.DROWNING){
+                        broadcast(GetConfigString("dmsg_Drowning").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION){
+                        broadcast(GetConfigString("dmsg_EntityExplosion").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.FALL){
+                        broadcast(GetConfigString("dmsg_Fall").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.FALLING_BLOCK){
+                        broadcast(GetConfigString("dmsg_FallingBlock").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.FIRE){
+                        broadcast(GetConfigString("dmsg_Fire").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.FIRE_TICK){
+                        broadcast(GetConfigString("dmsg_FireTick").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.FLY_INTO_WALL){
+                        broadcast(GetConfigString("dmsg_FlyIntoWall").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.HOT_FLOOR){
+                        broadcast(GetConfigString("dmsg_HotFloor").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.LAVA){
+                        broadcast(GetConfigString("dmsg_Lava").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.LIGHTNING){
+                        broadcast(GetConfigString("dmsg_Lightning").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.MAGIC){
+                        broadcast(GetConfigString("dmsg_Magic").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.POISON){
+                        broadcast(GetConfigString("dmsg_Poison").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.PROJECTILE){
+                        broadcast(GetConfigString("dmsg_Projectile").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.STARVATION){
+                        broadcast(GetConfigString("dmsg_Starvation").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.SUFFOCATION){
+                        broadcast(GetConfigString("dmsg_Suffocation").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.SUICIDE){
+                        broadcast(GetConfigString("dmsg_Suicide").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.THORNS){
+                        broadcast(GetConfigString("dmsg_Thorns").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.VOID){
+                        broadcast(GetConfigString("dmsg_Void").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.WITHER){
+                        broadcast(GetConfigString("dmsg_Wither").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if(cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK){
+                        broadcast(GetConfigString("dmsg_EntityAttack").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else {
+                        broadcast(GetConfigString("AnnounceDeathText").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    }
+
+
                 }
 
                 // drop loot
                 if(!ConfigManager.config.getBoolean("KeepInventoryEnabled")) {
                     // if item in off hand
                     if(damaged.getInventory().getItemInOffHand().getType() != Material.AIR) {
-                        // drop
-                        damaged.getWorld().dropItemNaturally(damaged.getLocation(), damaged.getInventory().getItemInOffHand());
-                        damaged.getInventory().setItemInOffHand(null);
+                        if(damaged.getInventory().getItemInOffHand().getEnchantments().containsKey(Enchantment.VANISHING_CURSE)){
+                            damaged.getInventory().getItemInOffHand().setAmount(0);
+                        } else {
+                            // drop
+                            damaged.getWorld().dropItemNaturally(damaged.getLocation(), damaged.getInventory().getItemInOffHand());
+                            damaged.getInventory().setItemInOffHand(null);
+                        }
                     }
 
                     // helm
                     if(damaged.getInventory().getHelmet() != null) {
-                        damaged.getWorld().dropItemNaturally(damaged.getLocation(), damaged.getInventory().getHelmet());
-                        damaged.getInventory().setHelmet(null);
+                        if(damaged.getInventory().getHelmet().getEnchantments().containsKey(Enchantment.VANISHING_CURSE)){
+                            damaged.getInventory().getHelmet().setAmount(0);
+                        } else {
+                            damaged.getWorld().dropItemNaturally(damaged.getLocation(), damaged.getInventory().getHelmet());
+                            damaged.getInventory().setHelmet(null);
+                        }
                     }
 
                     // chest
                     if(damaged.getInventory().getChestplate() != null) {
-                        damaged.getWorld().dropItemNaturally(damaged.getLocation(), damaged.getInventory().getChestplate());
-                        damaged.getInventory().setChestplate(null);
+                        if(damaged.getInventory().getChestplate().getEnchantments().containsKey(Enchantment.VANISHING_CURSE)){
+                            damaged.getInventory().getChestplate().setAmount(0);
+                        } else {
+                            damaged.getWorld().dropItemNaturally(damaged.getLocation(), damaged.getInventory().getChestplate());
+                            damaged.getInventory().setChestplate(null);
+                        }
                     }
 
                     // legs
                     if(damaged.getInventory().getLeggings() != null) {
-                        damaged.getWorld().dropItemNaturally(damaged.getLocation(), damaged.getInventory().getLeggings());
-                        damaged.getInventory().setLeggings(null);
+                        if(damaged.getInventory().getLeggings().getEnchantments().containsKey(Enchantment.VANISHING_CURSE)){
+                            damaged.getInventory().getLeggings().setAmount(0);
+                        } else {
+                            damaged.getWorld().dropItemNaturally(damaged.getLocation(), damaged.getInventory().getLeggings());
+                            damaged.getInventory().setLeggings(null);
+                        }
                     }
 
                     // boots
                     if(damaged.getInventory().getBoots() != null) {
-                        damaged.getWorld().dropItemNaturally(damaged.getLocation(), damaged.getInventory().getBoots());
-                        damaged.getInventory().setBoots(null);
+                        if(damaged.getInventory().getBoots().getEnchantments().containsKey(Enchantment.VANISHING_CURSE)){
+                            damaged.getInventory().getBoots().setAmount(0);
+                        } else {
+                            damaged.getWorld().dropItemNaturally(damaged.getLocation(), damaged.getInventory().getBoots());
+                            damaged.getInventory().setBoots(null);
+                        }
                     }
 
                     // for each inv item
                     for (ItemStack i : damaged.getInventory().getContents()) {
                         // drop item
                         if (i != null) {
-                            damaged.getWorld().dropItemNaturally(damaged.getLocation(), i);
-                            damaged.getInventory().remove(i);
+                            if(i.getEnchantments().containsKey(Enchantment.VANISHING_CURSE)){
+                                i.setAmount(0);
+                                continue;
+                            } else {
+                                damaged.getWorld().dropItemNaturally(damaged.getLocation(), i);
+                                damaged.getInventory().remove(i);
+                            }
+
+
                         }
                     }
                 }
@@ -176,7 +265,11 @@ public class PlayerDamageListener implements Listener {
                         // if this isn't delayed it gives a weird "user took too long to log in" bug.
                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                             public void run() {
-                                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "tempban " + damaged.getName() + " " + ConfigManager.config.getString("BanOnDeathHoursAmmount") + "h1s " + ConfigManager.config.getString("BanOnDeathText"));
+                                if(damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()  > 0)
+                                {
+                                    plugin.getServer().getBanList(Type.NAME).addBan(damaged.getName(), ChatColor.RED + ConfigManager.config.getString("BanOnDeathText") + ChatColor.RESET, getBanDate(ConfigManager.config.getInt("BanOnDeathHoursAmmount")), "HardcorePlus");    
+                                    damaged.kickPlayer(ChatColor.RED + ConfigManager.config.getString("BanOnDeathText") + ChatColor.RESET);
+                                }
                             }
                         }, 20);
                     }
@@ -185,5 +278,19 @@ public class PlayerDamageListener implements Listener {
             }
         }
 
+    }
+    private Date getBanDate(int h)
+    {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.HOUR_OF_DAY, h);
+        return c.getTime();
+    }
+    // Sends a message to the whole server
+    private void broadcast(String msg){
+        plugin.getServer().broadcastMessage(msg);
+    }
+    private String GetConfigString(String configEntry){
+        return ConfigManager.config.getString(configEntry);
     }
 }
