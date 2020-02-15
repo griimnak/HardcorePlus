@@ -41,8 +41,9 @@ public class PlayerDamageListener implements Listener {
 
             /*
                 ==========
-                Totem fix
+                Totem fix [Dec 5 2019]
                 ==========
+                github.com/AleksanderEvensen
             */
             // Check if totems are enabled in the config
             if(ConfigManager.config.getBoolean("TotemOfUndyingWorks")){

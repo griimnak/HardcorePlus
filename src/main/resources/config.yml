@@ -32,9 +32,7 @@ RespawnBedText: "You awake from your dream in confusion."
 RespawnWildText: "With no place of rest set, you awake from your dream in familiar land."
 
 
-
-
-#Totme fixed
+#Totem fixed
 TotemOfUndyingWorks: true # Disable or enable the Totem of Undying
 TotemDeathPlayerText: "A magical power saves you from a potential casualty." # Text to display for the user when he/she uses a Totem of Undying
 
